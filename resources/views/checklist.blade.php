@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
+  @extends('index') @section('title', 'Halaman Pengisian Ceklis')
+
+@section('content')
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,16 +55,11 @@
 
 </head>
 <body>
+
+
 <div class="container">
-  <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">
-                Logout
-            </button>
-</form>
     <h1>📋 Checklist Pajangan + Foto</h1>
     <div class="info" id="tanggal"></div>
-    <div class="info" ><span>Halo, <strong>{{ Auth::user()->name }}</strong> ({{ Auth::user()->role }})</span></div>
     <div id="status" class="status loading">🔄 Mengambil data dari MySQL...</div>
 
     <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 15px;">
@@ -382,4 +380,5 @@
   fetchData();
 </script>
 </body>
+@endsection
 </html>
