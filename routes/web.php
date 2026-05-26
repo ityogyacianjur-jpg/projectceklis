@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChecklistController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 // Rute Authentication
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -12,6 +13,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Rute yang membutuhkan Login
 Route::middleware('auth')->group(function () {
     
+
+
     // Halaman Checklist (Bisa diakses Admin & Supervisor)
     Route::get('/', [ChecklistController::class, 'index']);
     Route::get('/api/checklists', [ChecklistController::class, 'getData']);
@@ -20,11 +23,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/api/checklists/add', [ChecklistController::class, 'addItem']);
     Route::delete('/api/checklists/{id}', [ChecklistController::class, 'deleteItem']);
 
+    Route::get('/master-user', [UserController::class, 'index'])->name('users.index');
+    Route::get('/api/users', [UserController::class, 'getData']);
+    Route::post('/api/users', [UserController::class, 'store']);
+    Route::put('/api/users/{id}', [UserController::class, 'update']);
+    Route::delete('/api/users/{id}', [UserController::class, 'destroy']);
+    });
+
     // Area Khusus Administrator
     Route::middleware('can:is-admin')->group(function () {
         // Rute untuk master user dan manajemen program ditaruh di sini
-        // Contoh:
-        // Route::get('/master-user', [UserController::class, 'index']);
-        // Route::post('/master-user', [UserController::class, 'store']);
-    });
+        // Rute Master User CRUD
+    
 });
