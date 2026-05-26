@@ -49,11 +49,19 @@
    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; }
    .modal img { max-width: 90%; max-height: 90%; border-radius: 8px; }
 </style>
+
 </head>
 <body>
 <div class="container">
+  <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">
+                Logout
+            </button>
+</form>
     <h1>📋 Checklist Pajangan + Foto</h1>
     <div class="info" id="tanggal"></div>
+    <div class="info" ><span>Halo, <strong>{{ Auth::user()->name }}</strong> ({{ Auth::user()->role }})</span></div>
     <div id="status" class="status loading">🔄 Mengambil data dari MySQL...</div>
 
     <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 15px;">
