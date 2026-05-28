@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         // Validasi input dengan pesan kustom berbahasa Indonesia
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:100',
             'id_number' => 'required|string|max:50|unique:users,id_number',
             'password' => 'required|string|min:6',
         ], [
@@ -58,7 +58,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:100',
             'id_number' => [
                 'required',
                 'string',

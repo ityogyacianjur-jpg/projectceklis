@@ -7,42 +7,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Master User - Sistem Checklist</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body { padding: 30px; background-color: #f4f6f9; font-family: sans-serif; }
-        .card { border: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .table th { background-color: #212529; color: white; }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 p-6 font-sans antialiased text-gray-800">
 
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="max-w-6xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <div>
-            <h2 class="fw-bold mb-0">Master Data User</h2>
-            <p class="text-muted mb-0">Kelola hak akses dan akun operasional karyawan</p>
+            <h2 class="text-2xl font-bold">Master Data User</h2>
+            <p class="text-gray-500 text-sm">Kelola hak akses dan akun operasional karyawan</p>
         </div>
-        <div>
-            <a href="{{ url('/') }}" class="btn btn-outline-secondary me-2">← Kembali ke Checklist</a>
-            <button class="btn btn-primary" onclick="showCreateModal()">+ Tambah User Baru</button>
+        <div class="flex gap-2">
+            <a href="{{ url('/') }}" class="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded text-sm font-medium transition">
+                &larr; Kembali
+            </a>
+            <button onclick="showCreateModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition shadow">
+                + Tambah User
+            </button>
         </div>
     </div>
 
-    <div class="card p-4">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead>
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-left text-sm">
+                <thead class="bg-gray-800 text-white">
                     <tr>
-                        <th width="80">No</th>
-                        <th>Nama Lengkap</th>
-                        <th>ID Number (Username)</th>
-                        <th>Bergabung Pada</th>
-                        <th width="180" class="text-center">Aksi</th>
+                        <th class="px-4 py-3 w-16">No</th>
+                        <th class="px-4 py-3">Nama Lengkap</th>
+                        <th class="px-4 py-3">ID Number</th>
+                        <th class="px-4 py-3">Role</th>
+                        <th class="px-4 py-3">Bergabung Pada</th>
+                        <th class="px-4 py-3 text-center w-40">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="userTableBody">
+                <tbody id="userTableBody" class="divide-y divide-gray-200">
                     <tr>
-                        <td colspan="5" class="text-center text-muted">Memuat data user...</td>
+                        <td colspan="6" class="px-4 py-8 text-center text-gray-500">Memuat data user...</td>
                     </tr>
                 </tbody>
             </table>
@@ -50,51 +50,68 @@
     </div>
 </div>
 
-<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Tambah User Baru</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="userForm" onsubmit="handleFormSubmit(event)">
-                <div class="modal-body">
-                    <input type="hidden" id="userId">
-                    
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Nama Lengkap</label>
-                        <input type="text" id="userName" class="form-control" placeholder="Masukkan nama karyawan" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">ID Number / NIK</label>
-                        <input type="text" id="userIdNumber" class="form-control" placeholder="Contoh: USR001" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Password</label>
-                        <input type="password" id="userPassword" class="form-control">
-                        <div id="passwordHelp" class="form-text text-muted">Minimal 6 karakter.</div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary" id="btnSubmit">Simpan Data</button>
-                </div>
-            </form>
+<div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden transition-opacity">
+    <div class="bg-white w-full max-w-md mx-4 rounded-lg shadow-xl overflow-hidden">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+            <h5 class="text-lg font-bold" id="modalTitle">Tambah User Baru</h5>
+            <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
         </div>
+        
+        <form id="userForm" onsubmit="handleFormSubmit(event)">
+            <div class="p-6 space-y-4">
+                <input type="hidden" id="userId">
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Lengkap</label>
+                    <input type="text" id="userName" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan nama karyawan" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">ID Number / NIK</label>
+                    <input type="text" id="userIdNumber" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: USR001" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Role / Hak Akses</label>
+                    <select id="userRole" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="" disabled selected>Pilih Role...</option>
+                        <option value="user">User Biasa</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+                    <input type="password" id="userPassword" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <p id="passwordHelp" class="text-xs text-gray-500 mt-1">Minimal 6 karakter.</p>
+                </div>
+            </div>
+            
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-2">
+                <button type="button" onclick="closeModal()" class="px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-100 text-sm font-medium transition">Batal</button>
+                <button type="submit" id="btnSubmit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium shadow transition">Simpan Data</button>
+            </div>
+        </form>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const csrfToken = '{{ csrf_token() }}';
-    let userModal;
+    const modalEl = document.getElementById('userModal');
 
     document.addEventListener("DOMContentLoaded", function() {
-        userModal = new bootstrap.Modal(document.getElementById('userModal'));
         loadUsers();
     });
+
+    // --- LOGIKA MODAL VANILLA JS ---
+    function openModal() {
+        modalEl.classList.remove('hidden');
+    }
+
+    function closeModal() {
+        modalEl.classList.add('hidden');
+    }
+    // -------------------------------
 
     // Ambil Data User (READ)
     function loadUsers() {
@@ -105,21 +122,28 @@
                 tbody.innerHTML = '';
 
                 if (data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Belum ada data user terdaftar.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Belum ada data user terdaftar.</td></tr>';
                     return;
                 }
 
                 data.forEach((user, index) => {
                     const date = new Date(user.created_at).toLocaleDateString('id-ID');
+                    
+                    // Desain Badge untuk Role
+                    const roleBadge = user.role === 'admin' 
+                        ? '<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-semibold">Admin</span>' 
+                        : '<span class="bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs font-semibold">User</span>';
+
                     tbody.innerHTML += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td><strong>${user.name}</strong></td>
-                            <td><code>${user.id_number}</code></td>
-                            <td>${date}</td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-warning me-1" onclick="showEditModal(${JSON.stringify(user).replace(/"/g, '&quot;')})">Edit</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">Hapus</button>
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-4 py-3">${index + 1}</td>
+                            <td class="px-4 py-3 font-medium text-gray-900">${user.name}</td>
+                            <td class="px-4 py-3 font-mono text-gray-600 bg-gray-100 px-1 py-0.5 rounded">${user.id_number}</td>
+                            <td class="px-4 py-3">${roleBadge}</td>
+                            <td class="px-4 py-3 text-gray-500">${date}</td>
+                            <td class="px-4 py-3 text-center">
+                                <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs font-medium mr-1 transition" onclick="showEditModal(${JSON.stringify(user).replace(/"/g, '&quot;')})">Edit</button>
+                                <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-medium transition" onclick="deleteUser(${user.id})">Hapus</button>
                             </td>
                         </tr>
                     `;
@@ -132,10 +156,11 @@
     function showCreateModal() {
         document.getElementById('userForm').reset();
         document.getElementById('userId').value = '';
+        document.getElementById('userRole').value = '';
         document.getElementById('modalTitle').innerText = 'Tambah User Baru';
         document.getElementById('userPassword').required = true;
         document.getElementById('passwordHelp').innerText = 'Password wajib diisi untuk pengguna baru (Min. 6 karakter).';
-        userModal.show();
+        openModal();
     }
 
     // Trigger Modal Edit Data
@@ -144,10 +169,11 @@
         document.getElementById('userId').value = user.id;
         document.getElementById('userName').value = user.name;
         document.getElementById('userIdNumber').value = user.id_number;
+        document.getElementById('userRole').value = user.role;
         document.getElementById('modalTitle').innerText = 'Edit Data User';
         document.getElementById('userPassword').required = false;
         document.getElementById('passwordHelp').innerText = 'Biarkan kosong jika tidak ingin mengganti password.';
-        userModal.show();
+        openModal();
     }
 
     // Kirim Form Tambah / Ubah via Fetch API (CREATE & UPDATE)
@@ -157,6 +183,7 @@
         const id = document.getElementById('userId').value;
         const name = document.getElementById('userName').value;
         const id_number = document.getElementById('userIdNumber').value;
+        const role = document.getElementById('userRole').value;
         const password = document.getElementById('userPassword').value;
 
         const url = id ? `{{ url('/api/users') }}/${id}` : `{{ url('/api/users') }}`;
@@ -169,18 +196,16 @@
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ name, id_number, password })
+            body: JSON.stringify({ name, id_number, role, password })
         })
         .then(async res => {
             const result = await res.json();
             
             if (res.ok) {
-                // Berhasil (Status 200 / 201)
                 alert(result.message);
-                userModal.hide();
+                closeModal();
                 loadUsers();
             } else if (res.status === 422) {
-                // Tangkap Validasi Gagal dari Laravel (ID kembar, password kurang panjang, dll)
                 let errorAlert = "Gagal memproses data:\n";
                 for (const field in result.errors) {
                     errorAlert += `- ${result.errors[field].join(', ')}\n`;
